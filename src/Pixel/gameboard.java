@@ -1,9 +1,13 @@
 package Pixel;
 
+import com.sun.tools.javac.Main;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class gameboard extends JFrame implements MouseListener {
@@ -15,10 +19,17 @@ public class gameboard extends JFrame implements MouseListener {
         double randomNumber4;
         private Color pink1;
         int checkCounter;
+        int count = 3;
+        int badPixelCount = 0;
 
     public gameboard() {
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent evt) {
+                main.onExit(0,randomAlphaNumeric(10));
+            }
+        });
         this.setSize(700, 700);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle(randomAlphaNumeric(10));
         this.setVisible(true);
         this.addMouseListener(this);
@@ -26,7 +37,6 @@ public class gameboard extends JFrame implements MouseListener {
         this.healthyPixel = new HealthyPixel[TILE_SIDE_COUNT][TILE_SIDE_COUNT];
         this.damagedPixel = new DamagedPixel[TILE_SIDE_COUNT][TILE_SIDE_COUNT];
         pixelRender();
-           System.out.println(checkCounter);
     }
     private void pixelRender(){
 
@@ -135,6 +145,27 @@ public class gameboard extends JFrame implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int row = this.getBoardDimensionBasedOnCoordinates(e.getY());
         int col = this.getBoardDimensionBasedOnCoordinates(e.getX());
+        row -= 3;
+        col -= 1;
+
+        if (hasDamagedPixel(row, col) && damagedPixel[row][col].color != Color.BLACK) {
+
+            if (count == 0) {
+                damagedPixel[row][col].color = Color.BLACK;
+                count = 3;
+                badPixelCount++;
+            } else
+                count--;
+        }
+        if (hasBadPixel(row, col) && badPixel[row][col].color != Color.BLACK) {
+
+                badPixel[row][col].color = Color.BLACK;
+                badPixelCount++;
+        }
+        if (badPixelCount == 2048) {
+            UI.render(this,"Броенето свърши","Телефона има 50% изгорели пискели");
+        }
+        this.repaint();
     }
 
 

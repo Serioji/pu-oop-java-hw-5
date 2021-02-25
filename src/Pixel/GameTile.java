@@ -3,7 +3,7 @@ package Pixel;
 import java.awt.*;
 
 public class GameTile {
-    public static final int TILE_SIZE = 10;
+    public static final int TILE_SIZE = 12;
     private int row;
     private int col;
     private int tileSize;
@@ -27,7 +27,7 @@ public class GameTile {
          * @param "това е визуализирането на бойното поле със съответния му цвят и параметри за изчисляването на големината му"
          */
         g.setColor(Color.BLACK);
-        g.fillRect(8,31,641,641);
+        g.fillRect(8,31,769,769);
 
         }
 

@@ -15,7 +15,7 @@ public class BadPixel extends Pixel{
         int y = this.row * GameTile.TILE_SIZE;
 
         g.setColor(this.color);
-        g.fillRect(x+9, y+32, 8, 8);
+        g.fillRect(x+9, y+32, 9, 9);
 
     }
 }
